@@ -1,2 +1,4 @@
-# econ323_final_project
-Final Project of ECON323
+# Econ 323 Final Project Boston Housing Price
+
+This is a repo to store project of Boston Housing Price from Econ323. 
+
