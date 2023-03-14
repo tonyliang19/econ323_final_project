@@ -2,3 +2,5 @@
 
 This is a repo to store project of Boston Housing Price from Econ323. 
 
+Authors: Sherry, Tony, Wanxin
+
