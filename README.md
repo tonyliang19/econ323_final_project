@@ -1,6 +1,6 @@
-# Econ 323 Final Project Boston Housing Price
+# Boston Housing Price Prediction
 
-This is a repo to store project of Boston Housing Price from Econ323. 
+This is a repo to store project of Boston Housing Price from Econ323 Quantitative Economic Modelling with Data Science Applications
 
-Authors: Sherry, Tony, Wanxin
+Authors: Tony Liang, Wanxin Luo, Xuan Chen
 
