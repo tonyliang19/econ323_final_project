@@ -25,8 +25,10 @@
 		|
 		|
 	Modelling
-		| 
-		|
-		|
+		| Linear
+		| Ridge 
+		| LASSO
+		| Decision Tree
+		| Random Forest
 	Conclusion
 	References （Intext and source for some model theory...)
