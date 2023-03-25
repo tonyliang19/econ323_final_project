@@ -21,9 +21,9 @@
 	Intro
 		| add section to briefly explain 
 	EDA + Visualization
-		|
-		|
-		|
+		| Outlier
+		| Missing Value
+		| Distribution of samples (each variable)
 	Modelling
 		| Linear
 		| Ridge 
