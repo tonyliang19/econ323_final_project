@@ -32,3 +32,8 @@
 		| Random Forest
 	Conclusion
 	References （Intext and source for some model theory...)
+
+## Methods
+
+- Take off one Ridge and Decision Tree. Keep this simple and just have fewer models to train and explain
+- Try not to have explanations that heavily math or stat based. (Ideally in the context of original variables)
