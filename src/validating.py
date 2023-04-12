@@ -25,9 +25,8 @@ def mean_std_cross_val_scores(model, X_train, y_train, **kwargs):
     mean_scores = pd.DataFrame(scores).mean()
     std_scores = pd.DataFrame(scores).std()
     out_col = []
-
     for i in range(len(mean_scores)):
-        if i > 1 and i < 5:
+        if i > 1 and i < 8:
             out_col.append((f"%0.3f (+/- %0.3f)" % (-1 * mean_scores[i], std_scores[i])))
         else:
             out_col.append((f"%0.3f (+/- %0.3f)" % (1 * mean_scores[i], std_scores[i])))
