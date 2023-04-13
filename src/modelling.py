@@ -24,7 +24,7 @@ def OLS(X_mat, y_mat):
     return beta[0], beta[1:]
 
 # helper to fit a model based on name and optional keyword arguments provided to models
-def fit_model(X_train, y_train, X_test, y_test, name="", **kwargs):
+def fit_raw_model(X_train, y_train, X_test, y_test, name="", **kwargs):
     # check valid model names
     valid = ["OLS", "LASSO", "RF"]
     if name not in valid:
