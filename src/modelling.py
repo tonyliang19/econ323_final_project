@@ -1,6 +1,8 @@
 import pandas as pd
-from sklearn.model_selection import cross_val_score, cross_validate
 import numpy as np
+from sklearn.model_selection import cross_val_score, cross_validate
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression, Lasso
 
 # implementation of OLS in data
 # known B = (XTX)^-1XT Y
@@ -20,6 +22,29 @@ def OLS(X_mat, y_mat):
     y = y.to_numpy()
     beta = np.linalg.inv(X.T @ X) @ X.T @ y
     return beta[0], beta[1:]
+
+# helper to fit a model based on name and optional keyword arguments provided to models
+def fit_model(X_train, y_train, X_test, y_test, name="", **kwargs):
+    # check valid model names
+    valid = ["OLS", "LASSO", "RF"]
+    if name not in valid:
+        print("Did not provide a correct model name, try again")
+        return None
+    # instantiate regressor by name provide
+    if name == "OLS":
+        mod = LinearRegression()
+    if name == "LASSO":
+        mod = Lasso(**kwargs)
+    if name == "RF":
+        name = "Random Forest"
+        mod = RandomForestRegressor(**kwargs)
+    
+    # fit to train data and predict on test
+    mod.fit(X_train, y_train)
+    predicted = mod.predict(X_test)
+    # call helper to get results on scoring metrics on test set
+    result = get_metrics(actual=y_test, predicted=predicted, name=name)
+    return result.style.set_caption(f"Test Scores on {name} Regression")
 
 # helper to get metrics for models
 def get_metrics(actual, predicted, name=""):
