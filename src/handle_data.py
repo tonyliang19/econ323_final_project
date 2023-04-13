@@ -1,4 +1,29 @@
+# imports
 import pandas as pd
+import os
+import sys
+from urllib.request import urlretrieve
+from sklearn.compose import make_column_transformer
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+
+
+# helper to get data
+# get data, downloads from url if not in relative path
+def get_data(data_path):
+    # checkes if file exists, if not downloaded to that path
+    url = "https://raw.githubusercontent.com/tonyliang19/econ323_final_project/main/data/boston_housing_data.csv"
+    if not os.path.isfile(data_path):
+        print(f"You don't have the file yet, and it will be downloaded to: {os.path.abspath(data_path)}")
+        print("Downloading now, wait a few secs")
+        urlretrieve(url, data_path)
+        print("Done!")
+    else:
+        pass
+        
+    data = pd.read_csv(data_path)
+    return data
 
 # function to load and split data
 
@@ -44,3 +69,20 @@ def split_data(data_path, proportion=0.5, target=None, random_state=123):
     assert y_train.shape[0] == X_train.shape[0] and y_test.shape[0] == X_test.shape[0]
     # return the objects needed
     return X_train, X_test, y_train, y_test
+
+
+# Preprocessing and Feature engineering
+# common preprocessor for data
+def preprocess_data(df, drop="RAD"):
+    numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
+    numeric_cols.remove(drop)
+    
+    # transformers
+    numeric_transformer = make_pipeline(SimpleImputer(strategy="median"),
+                                        StandardScaler())
+    
+    preprocessor = make_column_transformer(
+        (numeric_transformer, numeric_cols),# scaling on numeric features
+        ("drop", [drop]) # drop RAD, since it is index-like obj
+    )
+    return preprocessor
