@@ -3,6 +3,9 @@ import numpy as np
 from sklearn.model_selection import cross_val_score, cross_validate
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression, Lasso
+# pipeline for model
+from sklearn.pipeline import make_pipeline
+from src.handle_data import preprocess_data
 
 # implementation of OLS in data
 # known B = (XTX)^-1XT Y
@@ -24,7 +27,7 @@ def OLS(X_mat, y_mat):
     return beta[0], beta[1:]
 
 # helper to fit a model based on name and optional keyword arguments provided to models
-def fit_raw_model(X_train, y_train, X_test, y_test, name="", **kwargs):
+def fit_model(X_train, y_train, X_test, y_test, name="", preprocess=False, **kwargs):
     # check valid model names
     valid = ["OLS", "LASSO", "RF"]
     if name not in valid:
@@ -38,16 +41,30 @@ def fit_raw_model(X_train, y_train, X_test, y_test, name="", **kwargs):
     if name == "RF":
         name = "Random Forest"
         mod = RandomForestRegressor(**kwargs)
-    
-    # fit to train data and predict on test
-    mod.fit(X_train, y_train)
-    predicted = mod.predict(X_test)
-    # call helper to get results on scoring metrics on test set
-    result = get_metrics(actual=y_test, predicted=predicted, name=name)
-    return result.style.set_caption(f"Test Scores on {name} Regression")
+        
+    # check if preprocess true, then process them and fit on those data instead
+    # default is False
+    if preprocess is True:
+        preprocessor = preprocess_data(X_train)
+        # make the pipeline to compact preprocessor with the mod
+        pipe = make_pipeline(preprocessor, mod)
+        # fit the data (applying transformations) and predict on test
+        pipe.fit(X_train, y_train)
+        predicted = pipe.predict(X_test)
+        result = get_metrics(actual=y_test, predicted=predicted, name=name, preprocess=True)
+        return result#.style.set_caption(f"Test Scores on {name} Regression with preprocessing transformations")
+        
+        
+    else:
+        # fit to train data and predict on test
+        mod.fit(X_train, y_train)
+        predicted = mod.predict(X_test)
+        # call helper to get results on scoring metrics on test set
+        result = get_metrics(actual=y_test, predicted=predicted, name=name)
+        return result#.style.set_caption(f"Test Scores on {name} Regression")
 
 # helper to get metrics for models
-def get_metrics(actual, predicted, name=""):
+def get_metrics(actual, predicted, name="", preprocess=False):
     # calculate MSE
     MSE = np.square(np.subtract(actual, predicted)).mean() 
     # calculate RMSE
@@ -60,7 +77,11 @@ def get_metrics(actual, predicted, name=""):
            "MAPE": round(MAPE,3)
           }
     # convert to dataframe with index name equal to name of model
-    result = pd.DataFrame([out], index=[name])
+    if preprocess is True:
+        label = name+" + preprocessed"
+    else:
+        label = name
+    result = pd.DataFrame([out], index=[label])
     return result
 
 # helper function to calculate mean and stf for cv scores

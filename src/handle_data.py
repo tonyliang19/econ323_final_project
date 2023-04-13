@@ -87,3 +87,8 @@ def preprocess_data(df, drop="RAD"):
         ("drop", [drop]) # drop RAD, since it is index-like obj
     )
     return preprocessor
+
+# simple helper to merge dataframe with same columns
+def merge_data(*df):
+    merged = pd.concat([*df])
+    return merged
