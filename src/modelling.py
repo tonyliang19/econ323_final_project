@@ -2,7 +2,6 @@ import pandas as pd
 from sklearn.model_selection import cross_val_score, cross_validate
 import numpy as np
 
-
 # implementation of OLS in data
 # known B = (XTX)^-1XT Y
 def OLS(X_mat, y_mat):
@@ -22,6 +21,22 @@ def OLS(X_mat, y_mat):
     beta = np.linalg.inv(X.T @ X) @ X.T @ y
     return beta[0], beta[1:]
 
+# helper to get metrics for models
+def get_metrics(actual, predicted, name=""):
+    # calculate MSE
+    MSE = np.square(np.subtract(actual, predicted)).mean() 
+    # calculate RMSE
+    RMSE = np.sqrt(MSE)
+    # calculate MAPE
+    MAPE = np.mean(np.abs((actual - predicted)/actual))
+    # store result
+    out = {"RMSE": round(RMSE, 3), 
+           "MSE": round(MSE, 3),
+           "MAPE": round(MAPE,3)
+          }
+    # convert to dataframe with index name equal to name of model
+    result = pd.DataFrame([out], index=[name])
+    return result
 
 # helper function to calculate mean and stf for cv scores
 def mean_std_cross_val_scores(model, X_train, y_train, **kwargs):
