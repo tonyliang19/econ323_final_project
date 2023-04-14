@@ -2,7 +2,6 @@
 
 # consider install seaborn if not exists yet
 import seaborn as sns
-import seaborn as sns
 import matplotlib.pyplot as plt
 
 # eda plot using seaborn, default uses hist for histogram
