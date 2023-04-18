@@ -27,6 +27,7 @@ def OLS(X_mat, y_mat):
     return beta[0], beta[1:]
 
 # helper to fit a model based on name and optional keyword arguments provided to models
+# and returns fitted model
 def fit_model(X_train, y_train, X_test, y_test, name="", preprocess=False, **kwargs):
     # check valid model names
     valid = ["OLS", "LASSO", "RF"]
@@ -45,23 +46,23 @@ def fit_model(X_train, y_train, X_test, y_test, name="", preprocess=False, **kwa
     # check if preprocess true, then process them and fit on those data instead
     # default is False
     if preprocess is True:
-        preprocessor = preprocess_data(X_train)
+        preprocessor = preprocess_data(X_train, drop="RAD")
         # make the pipeline to compact preprocessor with the mod
         pipe = make_pipeline(preprocessor, mod)
         # fit the data (applying transformations) and predict on test
-        pipe.fit(X_train, y_train)
-        predicted = pipe.predict(X_test)
-        result = get_metrics(actual=y_test, predicted=predicted, name=name, preprocess=True)
-        return result#.style.set_caption(f"Test Scores on {name} Regression with preprocessing transformations")
+        return pipe.fit(X_train, y_train)
+        #predicted = pipe.predict(X_test)
+        #result = get_metrics(actual=y_test, predicted=predicted, name=name, preprocess=True)
+        #return result#.style.set_caption(f"Test Scores on {name} Regression with preprocessing transformations")
         
         
     else:
         # fit to train data and predict on test
-        mod.fit(X_train, y_train)
-        predicted = mod.predict(X_test)
+        return mod.fit(X_train, y_train)
+        
         # call helper to get results on scoring metrics on test set
-        result = get_metrics(actual=y_test, predicted=predicted, name=name)
-        return result#.style.set_caption(f"Test Scores on {name} Regression")
+        #result = get_metrics(actual=y_test, predicted=predicted, name=name)
+        #return result#.style.set_caption(f"Test Scores on {name} Regression")
 
 # helper to get metrics for models
 def get_metrics(actual, predicted, name="", preprocess=False):

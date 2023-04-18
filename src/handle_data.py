@@ -74,9 +74,9 @@ def split_data(data_path, proportion=0.5, target=None, random_state=123):
 
 # Preprocessing and Feature engineering
 # common preprocessor for data
-def preprocess_data(df, drop="RAD"):
+def preprocess_data(df, drop=None):
     numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
-    numeric_cols.remove(drop)
+    #numeric_cols.remove(drop)
     
     # transformers
     numeric_transformer = make_pipeline(SimpleImputer(strategy="median"),
