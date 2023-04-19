@@ -78,16 +78,22 @@ def split_data(data_path, proportion=0.5, target=None, random_state=123, **kwarg
 # common preprocessor for data
 def preprocess_data(df, drop="RAD"):
     numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
-    numeric_cols.remove(drop)
-    
+    try:
+        numeric_cols.remove(drop)
+    except:
+        pass
     # transformers
     numeric_transformer = make_pipeline(SimpleImputer(strategy="median"),
                                         StandardScaler())
-    
-    preprocessor = make_column_transformer(
-        (numeric_transformer, numeric_cols),# scaling on numeric features
-        ("drop", [drop]) # drop RAD, since it is index-like obj
-    )
+    try:
+        preprocessor = make_column_transformer(
+            (numeric_transformer, numeric_cols),# scaling on numeric features
+        )
+    except:
+        preprocessor = make_column_transformer(
+            (numeric_transformer, numeric_cols),
+            ("drop", [drop]) # drop RAD, since it is index-like obj
+        )
     return preprocessor
 
 # simple helper to merge dataframe with same columns
