@@ -66,7 +66,8 @@ def fit_model(X_train, y_train, X_test, y_test, name="", preprocess=False, **kwa
 # helper to get metrics for models
 def get_metrics(actual, predicted, name="", preprocess=False):
     # calculate MSE
-    MSE = np.square(np.subtract(actual, predicted)).mean() 
+    # MSE = np.square(np.subtract(actual, predicted)).mean() 
+    MSE = np.mean(np.square(actual - predicted))
     # calculate RMSE
     RMSE = np.sqrt(MSE)
     # calculate MAE
