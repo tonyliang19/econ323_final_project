@@ -69,12 +69,12 @@ def get_metrics(actual, predicted, name="", preprocess=False):
     MSE = np.square(np.subtract(actual, predicted)).mean() 
     # calculate RMSE
     RMSE = np.sqrt(MSE)
-    # calculate MAPE
-    MAPE = np.mean(np.abs((actual - predicted)/actual))
-    # store result
+    # calculate MAE
+    MAE = np.mean(np.abs(actual - predicted))
+    # store result and round to 3 decimal places
     out = {"RMSE": round(RMSE, 3), 
            "MSE": round(MSE, 3),
-           "MAPE": round(MAPE,3)
+           "MAE": round(MAE,3)
           }
     # convert to dataframe with index name equal to name of model
     if preprocess is True:
