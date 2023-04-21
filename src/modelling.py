@@ -73,9 +73,9 @@ def get_metrics(actual, predicted, name="", preprocess=False):
     # calculate MAE
     MAE = np.mean(np.abs(actual - predicted))
     # store result and round to 3 decimal places
-    out = {"RMSE": round(RMSE, 3), 
+    out = {"MAE": round(MAE,3),
+           "RMSE": round(RMSE, 3), 
            "MSE": round(MSE, 3),
-           "MAE": round(MAE,3)
           }
     # convert to dataframe with index name equal to name of model
     if preprocess is True:
