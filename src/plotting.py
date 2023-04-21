@@ -44,6 +44,35 @@ def eda_plot(data, title, option, **kwargs):
         plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=5.0)
         plt.show()
 
+
+# helper to visualize predictors agains dependent variable
+def visualize_lr(df, chosen_cols, title, color='#f47915', alpha=0.35, s=12, height=4, option=None, **kwargs):
+    """
+        Parameters:
+            df                   use the boston dataset that contains MEDV
+            chosen_cols          variables to visualize against MEDV
+            title                plot title that is rendered below the figures
+            color                optional, default is '#f47915'
+            alpha                optional, default is 0.35, controls transparency of points
+            s                    optional, default is 12, size of points
+            height               optional, default is 4, height of individual figure
+            option               takes in any in ["lr", "pred"], default is None to let user prompt arguments
+            **kwargs             any additional keyword arguments for sns plots
+    """
+    # set common target variable
+    target = "MEDV"
+    # check if valid or not
+    not_valid = option is None or option != "subset"
+    if not_valid:
+        return "You did not provide correct arguments, try again"
+    
+    if option == "subset":
+        g = sns.PairGrid(df, y_vars=[target], x_vars=chosen_cols, height=height)
+        g.map(sns.regplot, fit_reg = True, scatter_kws=dict(s=s, alpha=alpha, color = color))
+    g.fig.suptitle("Figure X: Regression plot of Predictor (X axis) VS MEDV", y = -0.001)
+    plt.show()
+
+
         
 # helper to plot the -log alphas vs metrics for cv in LASSO
 def plot_alpha_metrics(title, data, colors=None):
