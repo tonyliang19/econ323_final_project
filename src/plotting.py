@@ -46,14 +46,16 @@ def eda_plot(data, title, option, **kwargs):
 
         
 # helper to plot the -log alphas vs metrics for cv in LASSO
-def plot_alpha_metrics(title, df, colors=None):
+def plot_alpha_metrics(title, data, colors=None):
+    # make a copy to use this to plot only (avoid any new create columns to alter original data)
+    df = data.copy()
+    # convert to log10 of alphas for better interpretability
+    df["log_alpha"] = -np.log10(df["alpha"])
     # metric names
     metrics = ["root_mean_squared_error", "mean_squared_error", "mean_absolute_error"]
     # color choices
     if colors is None:
         colors = ['#165aa7', '#f47915',  '#007030'] # replacement colors []'#bb60d5', '#f47915', '#06ab54', '#002070', '#b27d12', '#007030']
-    # convert to log10 of alphas for better interpretability
-    df["log_alpha"] = -np.log10(df["alpha"])
     
     # plot out the metrics
     fig, ax = plt.subplots(figsize=(10,6))
