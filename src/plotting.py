@@ -45,7 +45,7 @@ def eda_plot(data, title, option, **kwargs):
         plt.show()
 
 
-# helper to visualize predictors agains dependent variable
+# helper to visualize linear regression
 def visualize_lr(df, chosen_cols, title, color='#f47915', alpha=0.35, s=12, height=4, option=None, **kwargs):
     """
         Parameters:
