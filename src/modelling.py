@@ -26,6 +26,19 @@ def OLS(X_mat, y_mat):
     beta = np.linalg.inv(X.T @ X) @ X.T @ y
     return beta[0], beta[1:]
 
+# fit ols and get coefficients with their variable names
+def ols_coefficients(X, y):
+    mod = LinearRegression()
+    mod.fit(X, y)
+    # coefficients including intercept, rounded to 3 decimal places
+    betas = np.append(mod.intercept_, mod.coef_).round(3)
+    cols = list(X)
+    cols.insert(0, "(Intercept)")
+    lr_coeffs = pd.Series(dict(zip(cols, betas)))
+    # wrap to dataframe
+    out = pd.DataFrame(dict(linreg=lr_coeffs))
+    return out
+
 # helper to fit a model based on name and optional keyword arguments provided to models
 def fit_model(X_train, y_train, X_test, y_test, name="", preprocess=False, **kwargs):
     # check valid model names
