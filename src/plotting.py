@@ -69,7 +69,7 @@ def visualize_lr(df, chosen_cols, title, color='#f47915', alpha=0.35, s=12, heig
     if option == "subset":
         g = sns.PairGrid(df, y_vars=[target], x_vars=chosen_cols, height=height)
         g.map(sns.regplot, fit_reg = True, scatter_kws=dict(s=s, alpha=alpha, color = color))
-    g.fig.suptitle("Figure X: Regression plot of Predictor (X axis) VS MEDV", y = -0.001)
+    g.fig.suptitle(title, y = -0.001)
     plt.show()
 
 
