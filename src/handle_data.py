@@ -31,7 +31,7 @@ def get_data(data_path):
 # loads data from path, and specifies proportion of train data, with 1 - proportion of test data
 # and target is the variable of interest (your y), then returns train and test data
 # proportion is default to 0.5, and target default to None 
-def split_data(data_path, proportion=0.5, target=None, random_state=123, **kwargs):
+def split_data(data_path, proportion=0.5, target=None, random_state=123, drop_na = True, **kwargs):
     """
     Loads data from path, and specifies proportion of train data, with 1 - proportion of test data
     and target is the variable of interest (your y), then returns train and test data
@@ -43,7 +43,8 @@ def split_data(data_path, proportion=0.5, target=None, random_state=123, **kwarg
     # load the data
     data = pd.read_csv(data_path)
     # drop nas
-    data = data.dropna()
+    if drop_na is True:
+        data = data.dropna()
     # inner function to split data into train and test portion
     def train_test_split(data, proportion, plain=True, chosen_cols=None):
         train = data.sample(frac = proportion, random_state=random_state)
@@ -83,6 +84,8 @@ def preprocess_data(df, drop="RAD"):
     except:
         pass
     # transformers
+    
+    # impute NA values by median
     numeric_transformer = make_pipeline(SimpleImputer(strategy="median"),
                                         StandardScaler())
     try:
